@@ -14,7 +14,7 @@
  #UMC 설정
 spring:
   profiles:
-    active: local
+    active: deploy
 
 jwt:
   issuer: ajufresh@gmail.com
@@ -23,4 +23,4 @@ jwt:
   #refreshTokenExpiration: 1209600000 #2주
 kakao:
   client_id: ${KAKAO_API_KEY}
-  redirect_uri: http://localhost:8080/callback
+  redirect_uri: ${REDIRECT_URI}
