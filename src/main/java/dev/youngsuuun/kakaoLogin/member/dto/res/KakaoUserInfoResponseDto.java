@@ -147,9 +147,6 @@ public class KakaoUserInfoResponseDto {
         @JsonProperty("ci_authenticated_at")
         public Date ciCreatedAt;
 
-        public Gender gender() {
-        }
-
         @Getter
         @NoArgsConstructor
         @JsonIgnoreProperties(ignoreUnknown = true)
