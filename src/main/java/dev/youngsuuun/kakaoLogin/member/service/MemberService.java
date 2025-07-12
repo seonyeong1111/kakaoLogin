@@ -41,7 +41,6 @@ public class MemberService{
         return memberRepository.findByName(userInfo.getKakaoAccount().getProfile().getNickname())
                 .orElseGet(() -> {
                     Member newMem = Member.builder()
-                            .email(userInfo.getKakaoAccount().getEmail())
                             .name(userInfo.getKakaoAccount().getProfile().getNickname())
                             .role(Role.USER)
                             .socialType(SocialType.KAKAO)

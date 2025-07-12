@@ -32,6 +32,7 @@ public class KakaoService {
     //인가 토큰을 보내야함
     //https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
     public String getAccessTokenFromKakao(String code) {
+
         KakaoTokenResponseDto kakaoTokenResponseDto = WebClient.create(KAUTH_TOKEN_URL_HOST).post()
                 .uri(uriBuilder -> uriBuilder
                         .scheme("https")
@@ -43,20 +44,27 @@ public class KakaoService {
                         .build(true))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .retrieve()
-                //TODO : Custom Exception
-                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new RuntimeException("Invalid Parameter")))
-                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse ->
+                        clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody -> {
+                                    log.error("[KakaoService] 4xx 오류 발생. 응답 본문: {}", errorBody);
+                                    return Mono.error(new RuntimeException("Invalid Parameter: " + errorBody));
+                                })
+                )
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse ->
+                        clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody -> {
+                                    log.error("[KakaoService] 5xx 오류 발생. 응답 본문: {}", errorBody);
+                                    return Mono.error(new RuntimeException("Internal Server Error: " + errorBody));
+                                })
+                )
                 .bodyToMono(KakaoTokenResponseDto.class)
-                .block();
+                .block(); // 주의: block()은 동기 블로킹이므로 상황에 따라 다른 방식 고려
 
-        log.info(" [Kakao Service] Access Token ------> {}", kakaoTokenResponseDto.getAccessToken());
-        log.info(" [Kakao Service] Refresh Token ------> {}", kakaoTokenResponseDto.getRefreshToken());
-        //제공 조건: OpenID Connect가 활성화 된 앱의 토큰 발급 요청인 경우 또는 scope에 openid를 포함한 추가 항목 동의 받기 요청을 거친 토큰 발급 요청인 경우
-        //커밋테스트
-        log.info(" [Kakao Service] Id Token ------> {}", kakaoTokenResponseDto.getIdToken());
-        log.info(" [Kakao Service] Scope ------> {}", kakaoTokenResponseDto.getScope());
+
         return kakaoTokenResponseDto.getAccessToken();
     }
+
 
     public KakaoUserInfoResponseDto getUserInfo(String accessToken) {
 

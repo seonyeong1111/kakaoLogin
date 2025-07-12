@@ -33,22 +33,22 @@ public class WebSecurityConfig {
         http    .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v2/api-docs", "/v3/api-docs/**","/swagger-resources/**","/webjars/**","/configuration/**","/members/signup","/login","/callback","/api/images/*").permitAll() //나중에 추가하자
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v2/api-docs", "/v3/api-docs/**","/swagger-resources/**","/webjars/**","/configuration/**","/members/signup","/login","/callback","/api/images/*","/","/home").permitAll() //나중에 추가하자
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        .defaultSuccessUrl("/home", true)
-                )
-                .formLogin(form -> form
-                        .loginPage("/login") // 커스텀 로그인 페이지 URL
-                        .defaultSuccessUrl("/home", true) // 로그인 성공 후 이동할 URL
-                        .permitAll())
-                .logout((logout) -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                ).addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//                .formLogin(form -> form
+//                        .defaultSuccessUrl("/home", true)
+//                )
+//                .formLogin(form -> form
+//                        .loginPage("/login") // 커스텀 로그인 페이지 URL
+//                        .defaultSuccessUrl("/home", true) // 로그인 성공 후 이동할 URL
+//                        .permitAll())
+//                .logout((logout) -> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/login?logout")
+//                        .permitAll())
+                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

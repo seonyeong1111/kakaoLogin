@@ -1,5 +1,6 @@
 package dev.youngsuuun.kakaoLogin.member.controller;
 
+import dev.youngsuuun.kakaoLogin.member.domain.Member;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,8 @@ public class KaokaoLoginController {
     private final KakaoService kakaoService;
     private final MemberService memberService;
 
-    @PostMapping("/callback")
-    public ApiResponse<LoginResDto> callback(@RequestBody String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/callback")
+    public ApiResponse<LoginResDto> callback(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String accessToken = kakaoService.getAccessTokenFromKakao(code);
 
         KakaoUserInfoResponseDto userInfo = kakaoService.getUserInfo(accessToken);
@@ -31,4 +32,6 @@ public class KaokaoLoginController {
         //회원가입, 로그인 동시진행
         return ApiResponse.onSuccess(memberService.kakaoLogin(request,response, memberService.kakaoSignup(userInfo)));
     }
+
 }
+

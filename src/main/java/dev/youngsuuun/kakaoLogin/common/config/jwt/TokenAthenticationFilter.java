@@ -28,7 +28,7 @@ public class TokenAthenticationFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION); //헤더에서 키가 'Authorization'인 필드 값을 가져옴
         String token = getAccessToken(authorizationHeader); //Bearer 제거
 
-        if (tokenProvider.validateToken(token)) { //유효하지 않으면 그대로 넘김
+        if (token != null && tokenProvider.validateToken(token)) { //유효하지 않으면 그대로 넘김
             Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

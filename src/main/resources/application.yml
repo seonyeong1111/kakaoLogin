@@ -14,7 +14,7 @@
  #UMC 설정
 spring:
   profiles:
-    active: deploy
+    active: local
 
 jwt:
   issuer: ajufresh@gmail.com

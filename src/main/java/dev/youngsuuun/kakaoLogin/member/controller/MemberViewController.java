@@ -28,12 +28,12 @@ public class MemberViewController {
         return "admin";
     }
 
-    @GetMapping("/login")
-    public String loginPage(Model model) {
-        String location = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
-        model.addAttribute("location", location);
-
-        return "login";
-    }
+//    @GetMapping("/login")
+//    public String loginPage(Model model) {
+//        String location = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
+//        model.addAttribute("location", location);
+//
+//        return "login";
+//    }
 
 }

@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://kakaologin-server.mysql.database.azure.com:3306/kakaologin-database
-    username: 'rxkrwfiosp'
-    password: 'OGbxclibD$CreFtX'
+    username: 'kquuaixstj'
+    password: 'QykWQt6N8ssmd$x0'
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:

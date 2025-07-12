@@ -31,6 +31,7 @@ public class TokenProvider {
 
     @PostConstruct
     protected void init() {
+        log.info("📦 JWT_SECRET(raw): '{}'", jwtProperties.getSecretKey());
         byte[] keyBytes = Base64.getDecoder().decode(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
         secretKey = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
     }
